@@ -1,0 +1,6 @@
+alias zshrc="code ~/.zshrc"
+alias zshrc_load="source ~/.zshrc"
+alias '..'="cd .."
+alias '...'="cd ../.."
+alias '....'="cd ../../.."
+alias '.....'="cd ../../../.."
