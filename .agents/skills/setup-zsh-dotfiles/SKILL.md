@@ -1,15 +1,16 @@
 ---
 name: setup-zsh-dotfiles
-description: 'yuyakinjo/dotfiles を $HOME/workspace にクローンし、chezmoi を使って zsh の設定(dot_zshrc, dot_zsh/)を適用する。新しいマシンのセットアップ、dotfiles の再インストール、zsh 設定の復元、「dotfiles をクローンしたい」「zshをセットアップしたい」と言われたときに使用する。'
+description: 'yuyakinjo/dotfiles を $HOME/workspace にクローンし、Homebrew(Brewfile)でツールを揃え、chezmoi を使って zsh の設定(dot_zshrc, dot_zsh/)を適用する。新しいマシンのセットアップ、dotfiles の再インストール、zsh 設定の復元、「dotfiles をクローンしたい」「zshをセットアップしたい」と言われたときに使用する。'
 ---
 
 # dotfiles から zsh をセットアップする
 
 ## これは何をするか
 
-このリポジトリを `$HOME/workspace/dotfiles` にクローンし、[chezmoi](https://www.chezmoi.io/)
-を使って zsh の設定(`dot_zshrc` → `~/.zshrc`、`dot_zsh/` → `~/.zsh/`)を対象のマシンに適用する。
-[bootstrap.sh](../../../bootstrap.sh) と同じ内容。
+このリポジトリを `$HOME/workspace/dotfiles` にクローンし、[Homebrew](https://brew.sh/) で
+[Brewfile](../../../Brewfile) に記載のツール(chezmoi, gh, starship, zoxide, fzf など)を揃えたうえで、
+[chezmoi](https://www.chezmoi.io/) を使って zsh の設定(`dot_zshrc` → `~/.zshrc`、`dot_zsh/` → `~/.zsh/`)を
+対象のマシンに適用する。[bootstrap.sh](../../../bootstrap.sh) と同じ内容。
 
 ## 使うタイミング
 
@@ -21,13 +22,17 @@ description: 'yuyakinjo/dotfiles を $HOME/workspace にクローンし、chezmo
 
 ### 1. ワンショットのブートストラップ(まだローカルにクローンしていない場合)
 
-リポジトリの bootstrap スクリプトを直接実行する。chezmoi が無ければインストールし、
-このリポジトリを chezmoi のソースディレクトリとして `$HOME/workspace/dotfiles` にクローンし、
-設定を適用する:
+リポジトリの bootstrap スクリプトを直接実行する。Homebrew と chezmoi が無ければインストールし、
+このリポジトリを chezmoi のソースディレクトリとして `$HOME/workspace/dotfiles` にクローンして
+設定を適用し、最後に [Brewfile](../../../Brewfile) のパッケージをインストールする:
 
 ```bash
 curl -fsLS https://raw.githubusercontent.com/yuyakinjo/dotfiles/main/bootstrap.sh | bash
 ```
+
+> 注意: Homebrew を新規インストールする場合、初回のみ `sudo` のパスワード入力が必要になることがある。
+> `curl | bash` のパイプ実行では tty が無く入力待ちで止まることがあるので、その場合はスクリプトを
+> 一度ダウンロードしてから `bash bootstrap.sh` として実行すること。
 
 ### 2. 手動での手順(すでにクローン済み、または bootstrap.sh が使えない場合)
 
@@ -39,18 +44,26 @@ curl -fsLS https://raw.githubusercontent.com/yuyakinjo/dotfiles/main/bootstrap.s
    gh repo clone yuyakinjo/dotfiles || git clone https://github.com/yuyakinjo/dotfiles.git
    cd dotfiles
    ```
-2. chezmoi が無ければインストールする:
+2. Homebrew が無ければインストールする:
+   ```bash
+   command -v brew >/dev/null 2>&1 || /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+   ```
+3. chezmoi が無ければインストールする:
    ```bash
    command -v chezmoi >/dev/null 2>&1 || brew install chezmoi
    ```
-3. このリポジトリをソースディレクトリとして chezmoi を初期化し、適用する:
+4. このリポジトリをソースディレクトリとして chezmoi を初期化し、適用する:
    ```bash
    chezmoi init --apply --source "$HOME/workspace/dotfiles" "https://github.com/yuyakinjo/dotfiles.git"
    ```
    これにより `dot_zshrc` → `~/.zshrc`、`dot_zsh/` → `~/.zsh/` が chezmoi の `dot_` 命名規則
    に従ってシンボリックリンク/コピーされる(`sourceDir` を `~/workspace/dotfiles` に固定している
    `.chezmoi.toml.tmpl` を参照)。
-4. シェルを再読み込みする:
+5. Brewfile のパッケージをインストールする:
+   ```bash
+   brew bundle --file="$HOME/workspace/dotfiles/Brewfile"
+   ```
+6. シェルを再読み込みする:
    ```bash
    exec zsh
    ```

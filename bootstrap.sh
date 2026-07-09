@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
-# Bootstrap script: sets up $HOME/workspace/dotfiles via chezmoi and applies zsh config.
+# Bootstrap script: sets up a new machine using this dotfiles repo.
+# - installs Homebrew (if missing) and packages from Brewfile
+# - clones $HOME/workspace/dotfiles via chezmoi and applies the zsh config
 # Usage: curl -fsLS https://raw.githubusercontent.com/yuyakinjo/dotfiles/main/bootstrap.sh | bash
 set -euo pipefail
 
@@ -9,14 +11,20 @@ SOURCE_DIR="$WORKSPACE/dotfiles"
 
 mkdir -p "$WORKSPACE"
 
+if ! command -v brew >/dev/null 2>&1; then
+  NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+  eval "$(/opt/homebrew/bin/brew shellenv 2>/dev/null || /usr/local/bin/brew shellenv)"
+fi
+
 if ! command -v chezmoi >/dev/null 2>&1; then
-  if command -v brew >/dev/null 2>&1; then
-    brew install chezmoi
-  else
-    sh -c "$(curl -fsLS get.chezmoi.io)"
-  fi
+  brew install chezmoi
 fi
 
 chezmoi init --apply --source "$SOURCE_DIR" "$REPO"
+
+if [[ -f "$SOURCE_DIR/Brewfile" ]]; then
+  echo "Installing packages from Brewfile..."
+  brew bundle --file="$SOURCE_DIR/Brewfile"
+fi
 
 echo "zsh setup complete. Restart your shell or run: exec zsh"

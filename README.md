@@ -10,27 +10,39 @@
 curl -fsLS https://raw.githubusercontent.com/yuyakinjo/dotfiles/main/bootstrap.sh | bash
 ```
 
-[bootstrap.sh](./bootstrap.sh) が chezmoi のインストール、`$HOME/workspace/dotfiles` へのクローン、
-設定の適用までを一括で行う。
+[bootstrap.sh](./bootstrap.sh) が Homebrew のインストール、[Brewfile](./Brewfile) に書かれたパッケージの導入、
+chezmoi による `$HOME/workspace/dotfiles` へのクローンと設定の適用までを一括で行う。
+
+> **注意**: Homebrew を新規インストールする場合、初回のみ `sudo` のパスワード入力を求められることがある。
+> `curl | bash` のパイプ実行では tty が無く入力待ちで止まる場合があるので、その場合はスクリプトを
+> 一度ダウンロードしてから `bash bootstrap.sh` として実行すること。
 
 ### 方法2: 手動セットアップ
 
-1. workspace ディレクトリを作成し、そこに移動してからクローンする:
+1. Homebrew をインストールする(未インストールの場合):
+   ```bash
+   command -v brew >/dev/null 2>&1 || /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+   ```
+2. workspace ディレクトリを作成し、そこに移動してからクローンする:
    ```bash
    mkdir -p "$HOME/workspace"
    cd "$HOME/workspace"
    gh repo clone yuyakinjo/dotfiles || git clone https://github.com/yuyakinjo/dotfiles.git
    cd dotfiles
    ```
-2. chezmoi をインストールする(未インストールの場合):
+3. chezmoi をインストールする(未インストールの場合):
    ```bash
    command -v chezmoi >/dev/null 2>&1 || brew install chezmoi
    ```
-3. chezmoi を初期化し、設定を適用する:
+4. chezmoi を初期化し、設定を適用する:
    ```bash
    chezmoi init --apply --source "$HOME/workspace/dotfiles" "https://github.com/yuyakinjo/dotfiles.git"
    ```
-4. シェルを再読み込みする:
+5. Brewfile のパッケージをインストールする:
+   ```bash
+   brew bundle --file="$HOME/workspace/dotfiles/Brewfile"
+   ```
+6. シェルを再読み込みする:
    ```bash
    exec zsh
    ```
@@ -41,13 +53,14 @@ curl -fsLS https://raw.githubusercontent.com/yuyakinjo/dotfiles/main/bootstrap.s
 
 ```
 bootstrap.sh          # ワンライナーセットアップ用スクリプト
+Brewfile               # Homebrew でインストールするパッケージ一覧(brew install/uninstall後に自動更新される)
 .chezmoi.toml.tmpl     # chezmoi 設定(sourceDir を ~/workspace/dotfiles に固定)
 dot_zshrc              # ~/.zshrc になる
 dot_zsh/
   init.zsh             # ツールの初期化(starship, zoxide など)
   aliases.zsh          # エイリアス
   functions.zsh        # dot_zsh/functions/ 配下を読み込む
-  functions/           # 1ファイル1関数の zsh 関数集
+  functions/           # 1ファイル1関数の zsh 関数集(brew.zsh, dotfiles_sync.zsh など)
 ```
 
 ## ローカルの変更をリポジトリに反映する
