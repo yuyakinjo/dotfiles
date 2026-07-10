@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
-# Bootstrap script: sets up a new machine using this dotfiles repo.
-# - installs Homebrew (if missing) and packages from Brewfile
-# - clones $HOME/workspace/dotfiles via chezmoi and applies the zsh config
-# Usage: curl -fsLS https://raw.githubusercontent.com/yuyakinjo/dotfiles/main/bootstrap.sh | bash
+# ブートストラップスクリプト: この dotfiles リポジトリを使って新しいマシンをセットアップする。
+# - Homebrew(未インストールの場合)と Brewfile に書かれたパッケージをインストールする
+# - chezmoi 経由で $HOME/workspace/dotfiles をクローンし、zsh 設定を適用する
+# 使い方: curl -fsLS https://raw.githubusercontent.com/yuyakinjo/dotfiles/main/bootstrap.sh | bash
 set -euo pipefail
 
 REPO="https://github.com/yuyakinjo/dotfiles.git"

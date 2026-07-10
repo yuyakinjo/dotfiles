@@ -10,44 +10,11 @@
 curl -fsLS https://raw.githubusercontent.com/yuyakinjo/dotfiles/main/bootstrap.sh | bash
 ```
 
-[bootstrap.sh](./bootstrap.sh) が Homebrew のインストール、[Brewfile](./Brewfile) に書かれたパッケージの導入、
-chezmoi による `$HOME/workspace/dotfiles` へのクローンと設定の適用までを一括で行う。
+[bootstrap.sh](./bootstrap.sh) が設定の適用までを一括で実行
 
-> **注意**: Homebrew を新規インストールする場合、初回のみ `sudo` のパスワード入力を求められることがある。
-> `curl | bash` のパイプ実行では tty が無く入力待ちで止まる場合があるので、その場合はスクリプトを
-> 一度ダウンロードしてから `bash bootstrap.sh` として実行すること。
+### 方法2: エージェントのスキルを実行する
 
-### 方法2: 手動セットアップ
-
-1. Homebrew をインストールする(未インストールの場合):
-   ```bash
-   command -v brew >/dev/null 2>&1 || /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-   ```
-2. workspace ディレクトリを作成し、そこに移動してからクローンする:
-   ```bash
-   mkdir -p "$HOME/workspace"
-   cd "$HOME/workspace"
-   gh repo clone yuyakinjo/dotfiles || git clone https://github.com/yuyakinjo/dotfiles.git
-   cd dotfiles
-   ```
-3. chezmoi をインストールする(未インストールの場合):
-   ```bash
-   command -v chezmoi >/dev/null 2>&1 || brew install chezmoi
-   ```
-4. chezmoi を初期化し、設定を適用する:
-   ```bash
-   chezmoi init --apply --source "$HOME/workspace/dotfiles" "https://github.com/yuyakinjo/dotfiles.git"
-   ```
-5. Brewfile のパッケージをインストールする:
-   ```bash
-   brew bundle --file="$HOME/workspace/dotfiles/Brewfile"
-   ```
-6. シェルを再読み込みする:
-   ```bash
-   exec zsh
-   ```
-
-詳細な手順は [setup-zsh-dotfiles スキル](./.agents/skills/setup-zsh-dotfiles/SKILL.md) を参照。
+`claude` や `codex` などのエージェントに [setup-zsh-dotfiles スキル](./.agents/skills/setup-zsh-dotfiles/SKILL.md) を実行させる(手順はスキル側に定義済み)。
 
 ## 構成
 
@@ -73,13 +40,3 @@ dotfiles_sync "変更内容の説明"
 ```
 
 詳細は [backup-chezmoi-dotfiles スキル](./.agents/skills/backup-chezmoi-dotfiles/SKILL.md) を参照。
-
-## エージェント向けスキル
-
-`claude` や `codex` などのエージェントから使えるスキルを [.agents/skills/](./.agents/skills/) に用意している
-(`.claude/skills`, `.codex/skills` はそこへのシンボリックリンク)。
-
-| スキル | 内容 |
-| --- | --- |
-| [setup-zsh-dotfiles](./.agents/skills/setup-zsh-dotfiles/SKILL.md) | このリポジトリをクローンして zsh 設定を適用する(repo → machine) |
-| [backup-chezmoi-dotfiles](./.agents/skills/backup-chezmoi-dotfiles/SKILL.md) | ローカルの変更をこのリポジトリに取り込んで push する(machine → repo) |
