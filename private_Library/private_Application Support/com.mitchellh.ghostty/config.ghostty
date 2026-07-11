@@ -1,0 +1,16 @@
+font-size = 17
+confirm-close-surface = false
+shell-integration = zsh
+font-family = "FiraCode Nerd Font Mono"
+#font-family = "Intel One Monot"
+#font-family = "Moralerspace Radon"
+window-inherit-working-directory = true
+window-padding-x = 10
+window-padding-y = 10
+#theme = CGA
+#theme = Batman
+#theme = Vercel
+#theme = Fish Tank
+#theme = Box
+theme = Cobalt Next Minimal
+#theme = TokyoNight Moon
