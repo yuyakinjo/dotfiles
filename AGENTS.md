@@ -1,0 +1,1 @@
+ユーザーに質問するときは、AskUserQuestionTool を使ってください
