@@ -14,6 +14,9 @@ function dotfiles_sync() {
   local source_dir
   source_dir="$(chezmoi source-path)" || return 1
 
+  print "▶︎ ローカル環境に適用中..."
+  chezmoi apply
+
   print "▶︎ chezmoi管理下のファイルの変更を取り込み中..."
   chezmoi re-add
 

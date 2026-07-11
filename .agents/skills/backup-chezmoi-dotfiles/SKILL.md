@@ -21,12 +21,10 @@ description: 'chezmoi 管理下の ~/.zshrc, ~/.zsh/ (dot_zsh/) へのローカ�
 
 ### 0. 事前確認: 未コミットの変更がないか確認する
 
-`chezmoi re-add` はデプロイ先(`~/.zsh/` 等)の内容でソースディレクトリを上書きする。
-そのため、ソースディレクトリ(`$(chezmoi source-path)`)に**未コミットの変更**が既にある状態で
-`dotfiles_sync` / `chezmoi re-add` を実行すると、デプロイ先にまだ反映されていない編集(例: リポジトリを
-直接編集したが `chezmoi apply` していない変更)が消えてしまうことがある。
+ソースディレクトリ(`$(chezmoi source-path)`)に**未コミットの変更**がある状態で
+`dotfiles_sync` を実行すると、その変更も一緒に commit・push される。
 
-そのため、実行前に必ず以下を確認する:
+実行前に必ず以下を確認する:
 
 ```bash
 git -C "$(chezmoi source-path)" status --short
@@ -34,10 +32,8 @@ git -C "$(chezmoi source-path)" status --short
 
 未コミットの変更がある場合は、`AskUserQuestionTool` を使ってユーザーに次のいずれかを確認する:
 
-- その変更を今回のバックアップに含めてよいか(先に `chezmoi apply` してデプロイ先に反映してから同期する)
-- その変更は一旦除外し、コミットせずに残しておくか
-
-ユーザーの回答に応じて、必要なら `chezmoi apply` を実行してから 1. に進む。
+- その変更を今回のバックアップに含めてよいか
+- その変更は一旦除外し、コミットせずに残しておくか(その場合は対象ファイルを退避してから実行する)
 
 ### 1. 推奨: `dotfiles_sync` 関数を使う
 
@@ -49,12 +45,14 @@ dotfiles_sync                      # コミットメッセージは自動生成 
 dotfiles_sync "変更内容の説明"      # コミットメッセージを指定する場合
 ```
 
-`chezmoi re-add` を実行した後、ソースディレクトリ(`$(chezmoi source-path)`、すなわち
-`$HOME/workspace/dotfiles`)内の変更を commit・push する。
+`chezmoi apply`(リポジトリの変更をデプロイ先へ反映)→ `chezmoi re-add`(デプロイ先の変更をソースへ取り込み)
+を実行した後、ソースディレクトリ(`$(chezmoi source-path)`、すなわち `$HOME/workspace/dotfiles`)内の
+変更を commit・push する。
 
 ### 2. 手動での代替手順(関数が読み込まれていない場合)
 
 ```bash
+chezmoi apply
 chezmoi re-add
 source_dir="$(chezmoi source-path)"
 git -C "$source_dir" --no-pager diff --stat
