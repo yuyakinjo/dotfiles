@@ -5,6 +5,8 @@ brew "actionlint"
 brew "bun"
 # Manage your dotfiles across multiple diverse machines, securely
 brew "chezmoi"
+# Modern, maintained replacement for ls
+brew "eza"
 # Command-line fuzzy finder written in Go
 brew "fzf"
 # Replace zsh completion selection menu with fzf
@@ -33,6 +35,7 @@ cask "codex"
 cask "codex-app"
 cask "font-fira-code"
 cask "font-fira-code-nerd-font"
+cask "font-hack-nerd-font"
 cask "font-intel-one-mono"
 cask "font-monaspace"
 cask "font-roboto-mono-nerd-font"
