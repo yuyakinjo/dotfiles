@@ -13,6 +13,10 @@ brew "fzf"
 brew "fzf-tab"
 # GitHub command-line tool
 brew "gh"
+# Git extension for versioning large files
+brew "git-lfs"
+# Create, run, and share large language models (LLMs)
+brew "ollama"
 # Cross-shell prompt for astronauts
 brew "starship"
 # Shell extension to navigate your filesystem faster
@@ -21,8 +25,8 @@ brew "zoxide"
 cask "1password"
 # Enable Windows-like alt-tab
 cask "alt-tab"
-# User-friendly GUI app for Homebrew
-cask "applite"
+# 3D model slicing software for 3D printers, maintained by Bambu Lab
+cask "bambu-studio"
 # OpenAI's official ChatGPT desktop app
 cask "chatgpt"
 # Anthropic's official Claude AI desktop app
@@ -51,8 +55,6 @@ cask "google-japanese-ime@dev"
 cask "homerow"
 # Agent-centric IDE with spec-driven development
 cask "kiro"
-# AI-powered productivity tool for the command-line
-cask "kiro-cli"
 # Htop on steroids
 cask "neohtop"
 # Get up and running with large language models locally
@@ -63,10 +65,6 @@ cask "orbstack"
 cask "yuyakinjo/tap/piron-orbit"
 # Control your tools with a few keystrokes
 cask "raycast"
-# System monitor for the menu bar
-cask "stats"
-# Native GUI tool for relational databases
-cask "tableplus"
 # Web browser
 cask "thebrowsercompany-dia"
 # Open-source code editor
@@ -134,6 +132,7 @@ vscode "ms-vscode.remote-server"
 vscode "ms-vscode.test-adapter-converter"
 vscode "netcorext.uuid-generator"
 vscode "oderwat.indent-rainbow"
+vscode "oxc.oxc-vscode"
 vscode "pedro-w.tmlanguage"
 vscode "pkief.material-icon-theme"
 vscode "pnp.polacode"

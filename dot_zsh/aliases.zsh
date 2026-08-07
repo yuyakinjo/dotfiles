@@ -1,5 +1,7 @@
 alias zshrc="code ~/.zshrc"
 alias zshrc_load="source ~/.zshrc"
+alias codex_settings="code ~/.codex/config.toml"
+alias claude_settings="code ~/.claude/settings.json"
 alias ls="eza --icons --group-directories-first -1"
 alias ll="eza -l --icons --group-directories-first"
 alias la="eza -la --icons --group-directories-first"
