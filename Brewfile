@@ -15,6 +15,8 @@ brew "fzf-tab"
 brew "gh"
 # Git extension for versioning large files
 brew "git-lfs"
+# Open-source, cross-platform JavaScript runtime environment
+brew "node"
 # Create, run, and share large language models (LLMs)
 brew "ollama"
 # Cross-shell prompt for astronauts
@@ -65,6 +67,8 @@ cask "orbstack"
 cask "yuyakinjo/tap/piron-orbit"
 # Control your tools with a few keystrokes
 cask "raycast"
+# Native GUI tool for relational databases
+cask "tableplus"
 # Web browser
 cask "thebrowsercompany-dia"
 # Open-source code editor
@@ -153,3 +157,4 @@ vscode "wmaurer.change-case"
 vscode "xabikos.javascriptsnippets"
 vscode "yuichinukiyama.vscode-preview-server"
 vscode "yzhang.markdown-all-in-one"
+npm "@github/copilot"
