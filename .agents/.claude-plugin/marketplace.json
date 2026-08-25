@@ -1,0 +1,14 @@
+{
+  "name": "dotfiles",
+  "description": "dotfiles リポジトリ同梱の Agent Plugin",
+  "owner": {
+    "name": "yuyakinjo"
+  },
+  "plugins": [
+    {
+      "name": "dotfiles",
+      "source": "./",
+      "description": "dotfiles の Skills、MCP、Hooks をまとめた Agent Plugin"
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "dotfiles",
+  "description": "dotfiles の Skills、MCP、Hooks をまとめた Agent Plugin",
+  "version": "1.0.0",
+  "author": {
+    "name": "yuyakinjo"
+  }
+}
