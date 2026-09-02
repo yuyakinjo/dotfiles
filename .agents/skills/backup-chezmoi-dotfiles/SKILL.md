@@ -1,73 +1,64 @@
 ---
 name: backup-chezmoi-dotfiles
-description: 'chezmoi 管理下の ~/.zshrc, ~/.zsh/ (dot_zsh/) へのローカルな変更を、この dotfiles リポジトリに取り込んで push する。dot_zsh/ の中身がローカルで変わったとき、「dotfiles をバックアップしたい」「dotfiles を同期し直したい」「chezmoi re-add したい」、ローカルの zsh 設定変更を commit/push したいときに使用する。'
+description: 'この dotfiles リポジトリの変更(my/ の zsh 設定ソース、chezmoi 管理の starship / Ghostty / Brewfile)を commit・push する。「dotfiles をバックアップしたい」「dotfiles を同期し直したい」、ローカルの設定変更をリポジトリに反映したいときに使用する。'
 ---
 
-# chezmoi の dotfiles をバックアップする
+# dotfiles をバックアップする
 
 ## これは何をするか
 
-ローカルの `~/.zshrc` / `~/.zsh/`(このリポジトリの `dot_zshrc` / `dot_zsh/` を chezmoi が管理している)
-への変更を、chezmoi のソースディレクトリ(`$HOME/workspace/dotfiles`)に取り込み、
-[`dotfiles_sync`](../../../dot_zsh/functions/dotfiles_sync.zsh) 関数を使って commit・push する。
+このリポジトリ(`$HOME/workspace/dotfiles`)の変更を commit・push する。
+
+- **zsh の設定**は [my/app/_lib/config.ts](../../../my/app/_lib/config.ts) がソース。`~/.zshrc` / `~/.zsh/` は
+  `my apply` の生成物なので、chezmoi の `re-add` の対象ではない。手で `~/.zsh/*.zsh` を編集していたら
+  `my diff` に出るので、その内容を `config.ts` か `my/zsh/` に移してから `my apply` する
+- **starship / Ghostty** は chezmoi が管理する。`~/.config/starship.toml` を直接編集していたら `chezmoi re-add` で取り込む
+- **Brewfile** は `brew install / uninstall` のたびに自動で更新されている(brew ラッパー関数)
 
 ## 使うタイミング
 
-- このリポジトリを編集する代わりに、`~/.zsh/` や `~/.zshrc` を直接編集してしまったとき
-- 「dotfiles をバックアップして」「chezmoiをバックアップ」「ローカルの zsh 設定の変更をリポジトリに反映して」と言われたとき
-- `dot_zsh/` の内容を変更した前後で、ローカルとリポジトリの状態を一致させたいとき
+- 「dotfiles をバックアップして」「ローカルの設定変更をリポジトリに反映して」と言われたとき
+- `my/` を編集して `my apply` した後、リポジトリを push したいとき
 
 ## 手順
 
-### 0. 事前確認: 未コミットの変更がないか確認する
-
-ソースディレクトリ(`$(chezmoi source-path)`)に**未コミットの変更**がある状態で
-`dotfiles_sync` を実行すると、その変更も一緒に commit・push される。
-
-実行前に必ず以下を確認する:
+### 0. 事前確認: 未コミットの変更を見る
 
 ```bash
-git -C "$(chezmoi source-path)" status --short
+git -C "$HOME/workspace/dotfiles" status --short
+my diff
+chezmoi diff
 ```
 
-未コミットの変更がある場合は、`AskUserQuestionTool` を使ってユーザーに次のいずれかを確認する:
+`my sync` はリポジトリの**全部の変更**を commit・push する。意図しない変更が混ざっていないかを見て、
+混ざっていれば `AskUserQuestionTool` でユーザーに含めるか確認する。
 
-- その変更を今回のバックアップに含めてよいか
-- その変更は一旦除外し、コミットせずに残しておくか(その場合は対象ファイルを退避してから実行する)
+### 1. ドリフトがあれば先に解消する
 
-### 1. 推奨: `dotfiles_sync` 関数を使う
+- `my diff` に差分がある → 実ファイル側の変更を `my/app/_lib/config.ts` か `my/zsh/` に移し、
+  `cd ~/workspace/dotfiles/my && bun run link && my apply` で差分をゼロにする
+- `chezmoi diff` に差分がある → `chezmoi re-add`(デプロイ先の変更をソースへ)か `chezmoi apply`(ソースをデプロイ先へ)
 
-このリポジトリの設定が適用済みのシェル(`~/.zsh/functions/dotfiles_sync.zsh` が source 済み)であれば、
-以下を実行するだけでよい:
+### 2. commit・push する
 
 ```bash
-dotfiles_sync                      # コミットメッセージは自動生成 ("update dotfiles")
-dotfiles_sync "変更内容の説明"      # コミットメッセージを指定する場合
+my sync "変更内容の説明"     # 省略時は "update dotfiles"
+my sync --dry-run             # 何が commit されるかだけ見る
 ```
 
-`chezmoi apply`(リポジトリの変更をデプロイ先へ反映)→ `chezmoi re-add`(デプロイ先の変更をソースへ取り込み)
-を実行した後、ソースディレクトリ(`$(chezmoi source-path)`、すなわち `$HOME/workspace/dotfiles`)内の
-変更を commit・push する。
-
-### 2. 手動での代替手順(関数が読み込まれていない場合)
+手動なら:
 
 ```bash
-chezmoi apply
-chezmoi re-add
-source_dir="$(chezmoi source-path)"
-git -C "$source_dir" --no-pager diff --stat
-git -C "$source_dir" add -A
-git -C "$source_dir" commit -m "update dotfiles"
-git -C "$source_dir" push
+git -C "$HOME/workspace/dotfiles" add -A
+git -C "$HOME/workspace/dotfiles" commit -m "update dotfiles"
+git -C "$HOME/workspace/dotfiles" push
 ```
 
 ### 3. 確認
 
-- `chezmoi diff` で差分が無いこと(ローカルの状態とソースディレクトリが一致していること)を確認する
-- `git -C "$(chezmoi source-path)" status` がクリーンであること
-- `git -C "$(chezmoi source-path)" log -1` で新しいコミットが `main` に push されていることを確認する
+- `my diff` と `chezmoi diff` が差分なし
+- `git -C "$HOME/workspace/dotfiles" status` がクリーンで、`log -1` が push 済み
 
 ## 補足
 
-- `chezmoi re-add` は chezmoi が既に管理しているファイル(`dot_zshrc` / `dot_zsh/` 配下)への変更のみを取り込む。新規ファイルはまず `chezmoi add <path>` で追加する必要がある。
-- これは [setup-zsh-dotfiles](../setup-zsh-dotfiles/SKILL.md) の逆方向の操作: あちらはリポジトリ → マシン(`chezmoi apply`)、こちらはマシン → リポジトリ(`chezmoi re-add`)を同期する。
+- これは [setup-zsh-dotfiles](../setup-zsh-dotfiles/SKILL.md) の逆方向: あちらはリポジトリ → マシン、こちらはマシン → リポジトリ。

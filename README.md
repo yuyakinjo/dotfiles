@@ -42,7 +42,11 @@ chezmoi による `$HOME/workspace/dotfiles` へのクローンと設定の適�
    ```bash
    brew bundle --file="$HOME/workspace/dotfiles/Brewfile"
    ```
-6. シェルを再読み込みする:
+6. `my` をビルドして zsh の設定を書き出す(bun が要る。Brewfile に入っている):
+   ```bash
+   cd "$HOME/workspace/dotfiles/my" && bun install && bun run link && "$HOME/.local/bin/my" apply
+   ```
+7. シェルを再読み込みする:
    ```bash
    exec zsh
    ```
@@ -51,26 +55,40 @@ chezmoi による `$HOME/workspace/dotfiles` へのクローンと設定の適�
 
 ## 構成
 
+zsh の設定は **`my` CLI の生成物**。`~/.zshrc` と `~/.zsh/*` はソースではなく `my apply` が書き出す
+(`.next/` をコミットしないのと同じ考え方)。ソースは [my/app/_lib/config.ts](./my/app/_lib/config.ts)。
+chezmoi が管理するのは zsh 以外(starship, Ghostty, Brewfile)。
+
 ```
 bootstrap.sh          # ワンライナーセットアップ用スクリプト
 Brewfile               # Homebrew でインストールするパッケージ一覧(brew install/uninstall後に自動更新される)
 .chezmoi.toml.tmpl     # chezmoi 設定(sourceDir を ~/workspace/dotfiles に固定)
-dot_zshrc              # ~/.zshrc になる
-dot_zsh/
-  init.zsh             # ツールの初期化(starship, zoxide など)
-  aliases.zsh          # エイリアス
-  functions.zsh        # dot_zsh/functions/ 配下を読み込む
-  functions/           # 1ファイル1関数の zsh 関数集(brew.zsh, dotfiles_sync.zsh など)
+.chezmoiignore         # my/ は chezmoi の対象外
+dot_config/            # starship.toml
+private_Library/       # Ghostty の設定
+my/                    # decopin-cli で作った自分用 CLI。zsh 設定の唯一のソース
+  app/_lib/config.ts   #   alias / init / 配る zsh 関数の表。profile ごとの差分は spread
+  app/<command>/       #   my apply / diff / edit / reload / sync / profile / cache clean / worktree go|back
+  zsh/                 #   zsh のまま配る断片(brew ラッパー、fzf の zle ウィジェット、init)
 ```
 
-## ローカルの変更をリポジトリに反映する
+`my --help` でコマンド一覧、`my <command> --help` で使い方が出る。Tab 補完も付く。
 
-`~/.zshrc` や `~/.zsh/` を直接編集した場合は、変更をこのリポジトリに取り込んで push する:
+## 設定を変える・同期する
+
+zsh の設定は `~/.zshrc` を直接編集せず、ソースを編集して生成し直す:
 
 ```bash
-dotfiles_sync                # コミットメッセージは自動生成
-dotfiles_sync "変更内容の説明"
+my edit zshrc                # my/app/_lib/config.ts をエディタで開く
+cd ~/workspace/dotfiles/my && bun run link   # ビルドして ~/.local/bin/my を更新
+my diff                      # 生成物と実ファイルの差分(手編集のドリフトもここで分かる)
+my apply                     # 書き出す(--dry-run で何が変わるかだけ)
+my reload                    # 今のシェルに反映
+my sync "変更内容の説明"      # リポジトリを commit・push
 ```
+
+profile(`personal` / `work` / `server`)は `~/.config/my/device.json` の `{"profile": "work"}` で選ぶ。
+`my profile` で今の値が見える。
 
 詳細は [backup-chezmoi-dotfiles スキル](./.agents/skills/backup-chezmoi-dotfiles/SKILL.md) を参照。
 

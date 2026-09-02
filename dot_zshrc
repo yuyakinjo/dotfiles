@@ -1,7 +1,0 @@
-
-# Tool initializations (starship, zoxide, etc.), aliases, and functions are
-# split into separate files for readability
-[[ -f "$HOME/.zsh/init.zsh" ]] && source "$HOME/.zsh/init.zsh"
-[[ -f "$HOME/.zsh/aliases.zsh" ]] && source "$HOME/.zsh/aliases.zsh"
-[[ -f "$HOME/.zsh/functions.zsh" ]] && source "$HOME/.zsh/functions.zsh"
-
