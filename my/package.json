@@ -1,0 +1,21 @@
+{
+  "name": "my",
+  "private": true,
+  "type": "module",
+  "bin": {
+    "my": "dist/index.js"
+  },
+  "scripts": {
+    "build": "decopin build",
+    "dev": "decopin dev",
+    "typecheck": "tsc --noEmit",
+    "link": "bun run build && mkdir -p ~/.local/bin ~/.zsh/completions && ln -sf \"$PWD/dist/index.js\" ~/.local/bin/my && cp dist/completions/_my ~/.zsh/completions/_my"
+  },
+  "dependencies": {
+    "decopin-cli": "2026.902.643"
+  },
+  "devDependencies": {
+    "@types/bun": "^1.4.0",
+    "typescript": "^5.9.0"
+  }
+}

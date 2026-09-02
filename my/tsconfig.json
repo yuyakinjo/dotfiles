@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "strict": true,
+    "noEmit": true,
+    "skipLibCheck": true,
+    "types": ["bun"],
+    "jsx": "react-jsx",
+    "jsxImportSource": "decopin-cli/jsx",
+    "allowImportingTsExtensions": true
+  },
+  "include": ["app/**/*", ".decopin/types.d.ts"]
+}
