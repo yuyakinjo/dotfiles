@@ -1,8 +1,12 @@
 tap "yuyakinjo/tap", trusted: true
 # Static checker for GitHub Actions workflow files
 brew "actionlint"
+# Official Amazon AWS command-line interface
+brew "awscli"
 # Incredibly fast JavaScript runtime, bundler, test runner, and package manager
 brew "bun"
+# Record CDs in Disk-At-Once mode
+brew "cdrdao"
 # Manage your dotfiles across multiple diverse machines, securely
 brew "chezmoi"
 # Modern, maintained replacement for ls
@@ -15,12 +19,16 @@ brew "fzf-tab"
 brew "gh"
 # Git extension for versioning large files
 brew "git-lfs"
+# Command-line benchmarking tool
+brew "hyperfine"
 # Open-source, cross-platform JavaScript runtime environment
 brew "node"
 # Create, run, and share large language models (LLMs)
 brew "ollama"
 # Cross-shell prompt for astronauts
 brew "starship"
+# Command-line interface for Vercel
+brew "vercel"
 # Shell extension to navigate your filesystem faster
 brew "zoxide"
 # Password manager that keeps all passwords secure behind one password
@@ -61,12 +69,12 @@ cask "kiro"
 cask "neohtop"
 # Get up and running with large language models locally
 cask "ollama-app"
-# Replacement for Docker Desktop
-cask "orbstack"
 # Git workflow controller
 cask "yuyakinjo/tap/piron-orbit"
 # Control your tools with a few keystrokes
 cask "raycast"
+# Team communication and collaboration software
+cask "slack"
 # Native GUI tool for relational databases
 cask "tableplus"
 # Web browser
@@ -145,6 +153,7 @@ vscode "praveencrony.total-lines"
 vscode "prisma.prisma"
 vscode "rangav.vscode-thunder-client"
 vscode "redhat.vscode-yaml"
+vscode "rioj7.command-variable"
 vscode "sanchodelniglo.synthwave-80s-color-theme"
 vscode "shardulm94.trailing-spaces"
 vscode "skyapps.fish-vscode"
