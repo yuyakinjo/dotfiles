@@ -1,5 +1,5 @@
 import { Argv } from 'decopin-cli';
 
 export default function DefineArgv() {
-  return <Argv description="Source ~/.zshrc in the current shell." />;
+  return <Argv description="現在のシェルで ~/.zshrc を読み込み直す。" />;
 }

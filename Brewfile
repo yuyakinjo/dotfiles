@@ -73,6 +73,8 @@ cask "ollama-app"
 cask "yuyakinjo/tap/piron-orbit"
 # Control your tools with a few keystrokes
 cask "raycast"
+# Plugin for AWS CLI to start and end sessions that connect to managed instances
+cask "session-manager-plugin"
 # Team communication and collaboration software
 cask "slack"
 # Native GUI tool for relational databases
@@ -166,4 +168,3 @@ vscode "wmaurer.change-case"
 vscode "xabikos.javascriptsnippets"
 vscode "yuichinukiyama.vscode-preview-server"
 vscode "yzhang.markdown-all-in-one"
-npm "@github/copilot"

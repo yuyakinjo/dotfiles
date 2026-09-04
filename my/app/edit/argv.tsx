@@ -9,8 +9,8 @@ export const TARGETS = {
 
 export default function DefineArgv() {
   return (
-    <Argv description="Open a config file in the editor.">
-      <Arg name="target" required description="which file">
+    <Argv description="設定ファイルをエディタで開く。">
+      <Arg name="target" required description="開くファイル">
         <Type.Enum values={Object.keys(TARGETS)} />
       </Arg>
     </Argv>
