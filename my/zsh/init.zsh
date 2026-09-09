@@ -1,3 +1,5 @@
+eval "$(/opt/homebrew/bin/brew shellenv)"
+
 eval "$(starship init zsh)"
 
 if command -v zoxide >/dev/null 2>&1; then
