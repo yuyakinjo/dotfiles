@@ -1,10 +1,7 @@
 tap "bufbuild/buf", trusted: { formulae: ["bufbrew"] }
-tap "oven-sh/bun"
 tap "yuyakinjo/tap", trusted: true
 # Static checker for GitHub Actions workflow files
 brew "actionlint"
-# General-purpose data compression with high compression ratio
-brew "xz"
 # Open-source, cross-platform JavaScript runtime environment
 brew "node"
 # Browser automation CLI for AI agents
@@ -13,6 +10,8 @@ brew "agent-browser"
 brew "awscli"
 # Clone of cat(1) with syntax highlighting and Git integration
 brew "bat"
+# Incredibly fast JavaScript runtime, bundler, test runner, and package manager
+brew "bun"
 # JSON parser for C
 brew "json-c"
 # Record CDs in Disk-At-Once mode
@@ -107,8 +106,6 @@ brew "yarn"
 brew "zoxide"
 # The best way of working with Protocol Buffers.
 brew "bufbuild/buf/buf", trusted: true
-# Incredibly fast JavaScript runtime, bundler, transpiler and package manager - all in one.
-brew "oven-sh/bun/bun", trusted: true
 # Password manager that keeps all passwords secure behind one password
 cask "1password"
 # Enable Windows-like alt-tab
@@ -168,6 +165,8 @@ cask "kiro"
 cask "neohtop"
 # Get up and running with large language models locally
 cask "ollama-app"
+# Git workflow controller
+cask "yuyakinjo/tap/piron-orbit"
 # Control your tools with a few keystrokes
 cask "raycast"
 # Screen recorder and editor
@@ -182,8 +181,6 @@ cask "tableplus"
 cask "thebrowsercompany-dia"
 # Open-source code editor
 cask "visual-studio-code"
-# Binary releases of VS Code without MS branding/telemetry/licensing
-cask "vscodium"
 # Rust-based terminal
 cask "warp"
 vscode "aaron-bond.better-comments"
