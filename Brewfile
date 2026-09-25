@@ -177,8 +177,6 @@ cask "session-manager-plugin"
 cask "slack"
 # Native GUI tool for relational databases
 cask "tableplus"
-# Web browser
-cask "thebrowsercompany-dia"
 # Open-source code editor
 cask "visual-studio-code"
 # Rust-based terminal
