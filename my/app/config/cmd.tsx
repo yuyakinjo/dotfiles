@@ -4,7 +4,7 @@ import { Line, Text, type CommandProps } from 'decopin-cli';
 
 import { TARGETS } from './argv.tsx';
 
-export default async function Command({ args }: CommandProps<'edit'>) {
+export default async function Command({ args }: CommandProps<'config'>) {
   const target = TARGETS[args.target as keyof typeof TARGETS].replace('~', homedir());
   await Bun.spawn(['code', target]).exited;
   return (

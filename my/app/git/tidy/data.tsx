@@ -1,6 +1,6 @@
 import { missingTool, notFound, type CommandProps } from 'decopin-cli';
 
-import { listWorktrees } from '../../worktree/go/data.tsx';
+import { listWorktrees } from '../worktree/go/data.tsx';
 
 export type Action = 'deleted' | 'kept';
 

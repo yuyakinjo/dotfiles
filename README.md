@@ -68,7 +68,7 @@ dot_config/            # starship.toml
 private_Library/       # Ghostty の設定
 my/                    # decopin-cli で作った自分用 CLI。zsh 設定の唯一のソース
   app/_lib/config.ts   #   alias / init / 配る zsh 関数の表。profile ごとの差分は spread
-  app/<command>/       #   my apply / diff / edit / reload / sync / profile / cache clean / worktree go|back
+  app/<command>/       #   my apply / diff / config / reload / sync / profile / cache clean / git tidy|worktree go|back
   zsh/                 #   zsh のまま配る断片(brew ラッパー、fzf の zle ウィジェット、init)
 ```
 
@@ -79,7 +79,7 @@ my/                    # decopin-cli で作った自分用 CLI。zsh 設定の�
 zsh の設定は `~/.zshrc` を直接編集せず、ソースを編集して生成し直す:
 
 ```bash
-my edit zshrc                # my/app/_lib/config.ts をエディタで開く
+my config zshrc              # my/app/_lib/config.ts をエディタで開く
 cd ~/workspace/dotfiles/my && bun run link   # ビルドして ~/.local/bin/my を更新
 my diff                      # 生成物と実ファイルの差分(手編集のドリフトもここで分かる)
 my apply                     # 書き出す(--dry-run で何が変わるかだけ)
