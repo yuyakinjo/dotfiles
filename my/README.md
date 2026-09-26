@@ -8,6 +8,7 @@ bun install
 bun run link          # dist/index.js を ~/.local/bin/my に
 my diff               # 生成物と ~/.zshrc, ~/.zsh/* の差分
 my apply              # 書き込む (--dry-run で何が変わるかだけ)
+my sync-local         # git pull 後、chezmoi apply / brew bundle / my apply でローカルに反映
 ```
 
 生成される `.zshrc` が `eval "$(my __shell zsh)"` と補完の `fpath` を入れるので、
