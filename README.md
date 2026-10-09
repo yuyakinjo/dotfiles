@@ -75,7 +75,7 @@ dot_config/            # starship.toml
 private_Library/       # Ghostty の設定
 my/                    # decopin-cli で作った自分用 CLI。zsh 設定の唯一のソース
   app/_lib/config.ts   #   alias / init / 配る zsh 関数の表。profile ごとの差分は spread
-  app/<command>/       #   my apply / diff / config / reload / sync / profile / cache clean / git tidy|worktree go|back
+  app/<command>/       #   my apply / diff / config / reload / sync / sync-local / profile / cache clean / git tidy|worktree go|back
   zsh/                 #   zsh のまま配る断片(brew ラッパー、fzf の zle ウィジェット、init)
 ```
 
@@ -123,10 +123,18 @@ my reload                    # 今のシェルに反映
 my sync "変更内容の説明"      # リポジトリを commit・push
 ```
 
+他のマシンでの変更を取り込むときは `git pull` の後に:
+
+```bash
+my sync-local                 # chezmoi apply / brew bundle / my apply でリポジトリの変更をローカルに反映
+my sync-local --dry-run       # 何が変わるかだけ見る
+```
+
 profile(`personal` / `work` / `server`)は `~/.config/my/device.json` の `{"profile": "work"}` で選ぶ。
 `my profile` で今の値が見える。
 
-詳細は [backup-chezmoi-dotfiles スキル](./.agents/skills/backup-chezmoi-dotfiles/SKILL.md) を参照。
+詳細は [backup-chezmoi-dotfiles スキル](./.agents/skills/backup-chezmoi-dotfiles/SKILL.md)(machine → repo)、
+[setup-zsh-dotfiles スキル](./.agents/skills/setup-zsh-dotfiles/SKILL.md)(repo → machine)を参照。
 
 ## エージェント向けスキル
 

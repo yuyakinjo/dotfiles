@@ -23,6 +23,15 @@ zsh の設定はソースファイルのコピーではない。ソースは [my
 
 ## 手順
 
+### 0. 既にクローン済みのマシンで `git pull` した場合
+
+新規セットアップ(1・2)は不要。`my sync-local` が chezmoi apply / brew bundle / `my apply` をまとめて行う:
+
+```bash
+cd "$HOME/workspace/dotfiles" && git pull
+my sync-local             # --dry-run で何が変わるかだけ確認できる
+```
+
 ### 1. ワンショットのブートストラップ(まだローカルにクローンしていない場合)
 
 ```bash
