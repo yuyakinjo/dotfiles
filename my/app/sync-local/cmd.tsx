@@ -5,7 +5,7 @@ export default function Command({ data }: CommandProps<'sync-local'>) {
     <>
       {data.steps.map((s) => (
         <Line key={s.name}>
-          <Text color={!s.ran ? 'dim' : s.ok ? 'green' : 'red'}>{!s.ran ? 'skip' : s.ok ? 'ok' : 'failed'}</Text>{' '}
+          <Text color={!s.ran ? undefined : s.ok ? 'green' : 'red'} dim={!s.ran}>{!s.ran ? 'skip' : s.ok ? 'ok' : 'failed'}</Text>{' '}
           {s.name}
         </Line>
       ))}
