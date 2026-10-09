@@ -4,8 +4,6 @@ import { dirname, join } from 'node:path';
 
 import type { CommandProps } from 'decopin-cli';
 
-import { computeDrift } from '../_lib/drift.ts';
-
 const REPO = join(homedir(), 'workspace', 'dotfiles');
 
 export interface Step {
@@ -42,6 +40,8 @@ export default async function Data({ dryRun }: CommandProps<'sync-local'>) {
   const linkOk = installOk && (await run(['bun', 'run', 'link'], myDir));
   steps.push({ name: 'bun run link', ran: !dryRun, ok: linkOk });
 
+  // 実行中の dist は pull 前のビルドなので、生成元はリポジトリのソースから読み直す。
+  const { computeDrift }: typeof import('../_lib/drift.ts') = await import(join(myDir, 'app', '_lib', 'drift.ts'));
   const { profile, drifts } = await computeDrift();
   const changed = drifts.filter((d) => d.kind !== 'same');
   if (!dryRun) {
