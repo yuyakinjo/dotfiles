@@ -1,0 +1,2 @@
+# zerobrew が管理するパッケージ。Homebrew の一覧は Brewfile に残す。
+# brew 経由でパッケージを変更すると、初期化済みの zb から自動更新される。

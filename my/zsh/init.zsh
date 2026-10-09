@@ -1,5 +1,18 @@
 eval "$(/opt/homebrew/bin/brew shellenv)"
 
+if command -v zb >/dev/null 2>&1; then
+  export ZEROBREW_ROOT="${ZEROBREW_ROOT:-/opt/zerobrew}"
+  export ZEROBREW_PREFIX="${ZEROBREW_PREFIX:-$ZEROBREW_ROOT}"
+  # zb 0.4 と同じく、古い macOS のデフォルト prefix は使わない。
+  [[ "$ZEROBREW_PREFIX" == "$ZEROBREW_ROOT/prefix" ]] && export ZEROBREW_PREFIX="$ZEROBREW_ROOT"
+  for _zb_dir in "$ZEROBREW_PREFIX/sbin" "$ZEROBREW_PREFIX/bin"; do
+    if [[ ":$PATH:" != *":$_zb_dir:"* ]]; then
+      path=("$_zb_dir" $path)
+    fi
+  done
+  unset _zb_dir
+fi
+
 eval "$(starship init zsh)"
 
 if command -v zoxide >/dev/null 2>&1; then

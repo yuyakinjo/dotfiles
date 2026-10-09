@@ -1,6 +1,7 @@
 tap "bufbuild/buf", trusted: { formulae: ["bufbrew"] }
 tap "oven-sh/bun"
 tap "yuyakinjo/tap", trusted: true
+tap "zerobrewhq/zerobrew"
 # Static checker for GitHub Actions workflow files
 brew "actionlint"
 # General-purpose data compression with high compression ratio
@@ -109,6 +110,8 @@ brew "zoxide"
 brew "bufbuild/buf/buf", trusted: true
 # Incredibly fast JavaScript runtime, bundler, transpiler and package manager - all in one.
 brew "oven-sh/bun/bun", trusted: true
+# Fast package manager for Homebrew packages, written in Rust
+brew "zerobrewhq/zerobrew/zerobrew", trusted: true
 # Password manager that keeps all passwords secure behind one password
 cask "1password"
 # Enable Windows-like alt-tab

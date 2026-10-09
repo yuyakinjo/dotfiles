@@ -10,10 +10,11 @@
 curl -fsLS https://raw.githubusercontent.com/yuyakinjo/dotfiles/main/bootstrap.sh | bash
 ```
 
-[bootstrap.sh](./bootstrap.sh) が Homebrew のインストール、[Brewfile](./Brewfile) に書かれたパッケージの導入、
+[bootstrap.sh](./bootstrap.sh) が Homebrew のインストール、[Brewfile](./Brewfile) と
+[Brewfile.zerobrew](./Brewfile.zerobrew) に書かれたパッケージの導入、
 chezmoi による `$HOME/workspace/dotfiles` へのクローンと設定の適用までを一括で行う。
 
-> **注意**: Homebrew を新規インストールする場合、初回のみ `sudo` のパスワード入力を求められることがある。
+> **注意**: Homebrew の新規インストールや zerobrew の初期化では、`sudo` のパスワード入力を求められることがある。
 > `curl | bash` のパイプ実行では tty が無く入力待ちで止まる場合があるので、その場合はスクリプトを
 > 一度ダウンロードしてから `bash bootstrap.sh` として実行すること。
 
@@ -40,7 +41,12 @@ chezmoi による `$HOME/workspace/dotfiles` へのクローンと設定の適�
    ```
 5. Brewfile のパッケージをインストールする:
    ```bash
-   brew bundle --file="$HOME/workspace/dotfiles/Brewfile"
+   command brew bundle --file="$HOME/workspace/dotfiles/Brewfile"
+   # zerobrew の一覧にパッケージがある場合だけ復元する
+   if grep -Eq '^[[:space:]]*(brew|cask)[[:space:]]' "$HOME/workspace/dotfiles/Brewfile.zerobrew"; then
+     zb init --no-modify-path
+     zb bundle install --file="$HOME/workspace/dotfiles/Brewfile.zerobrew"
+   fi
    ```
 6. `my` をビルドして zsh の設定を書き出す(bun が要る。Brewfile に入っている):
    ```bash
@@ -61,7 +67,8 @@ chezmoi が管理するのは zsh 以外(starship, Ghostty, Brewfile)。
 
 ```
 bootstrap.sh          # ワンライナーセットアップ用スクリプト
-Brewfile               # Homebrew でインストールするパッケージ一覧(brew install/uninstall後に自動更新される)
+Brewfile               # Homebrew 管理のパッケージ一覧
+Brewfile.zerobrew      # zerobrew 管理のパッケージ一覧(両方とも brew 経由の変更後に自動更新)
 .chezmoi.toml.tmpl     # chezmoi 設定(sourceDir を ~/workspace/dotfiles に固定)
 .chezmoiignore         # my/ は chezmoi の対象外
 dot_config/            # starship.toml
@@ -73,6 +80,35 @@ my/                    # decopin-cli で作った自分用 CLI。zsh 設定の�
 ```
 
 `my --help` でコマンド一覧、`my <command> --help` で使い方が出る。Tab 補完も付く。
+
+## Homebrew と zerobrew の併用
+
+`brew` は alias ではなく zsh 関数。zerobrew 0.4 に対応するコマンド・オプションは `zb` へ、
+未対応のもの(`services`, `tap`, `reinstall`, `list --versions`, `install --cask` など)は Homebrew へ送る。
+`zb` が無いマシンでは、すべて Homebrew で実行する。zb の失敗時に本家で再試行はしない。
+
+初回は `zb init --no-modify-path` を実行する(`sudo` が必要な場合あり)。
+PATH は `my/zsh/init.zsh` が管理するため、zb に生成済みの `.zshrc` を変更させない。
+
+```sh
+brew install jq                     # zb でインストール
+brew services list                  # 本家へフォールバック
+brew bundle check                   # zb にないサブコマンドも本家へ
+brew --homebrew upgrade zerobrew     # 本家で実行し、自動バックアップも維持
+command brew list                   # ラッパーを完全に迂回(自動バックアップなし)
+```
+
+両者のパッケージ管理情報は独立している。本家で入れた既存パッケージを操作・確認するときは
+`brew --homebrew ...` を使う。既存パッケージの移行は自動では行わない。
+`brew bundle [install|dump]` の zb 側のデフォルトファイルは、カレントディレクトリの
+`Brewfile.zerobrew`。`--file` / `-f` で明示したパスはそのまま使う。
+
+`brew` 経由で install / uninstall / reinstall / upgrade / bundle install / migrate / reset / tap / untap が
+成功すると、chezmoi のソースディレクトリの両ファイルをそれぞれのマネージャーから更新する。
+未初期化の zb の一覧は上書きせず、dump 失敗時にも以前のファイルを残す。
+`zb ...` や `command brew ...` の直接実行には自動更新は付かない。
+
+検証: `cd my && bun test` (パッケージ操作はモックし、実際のインストール状態を変えない)。
 
 ## 設定を変える・同期する
 
