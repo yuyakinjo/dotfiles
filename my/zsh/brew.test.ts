@@ -114,6 +114,18 @@ describe('brew routing', () => {
     ]);
   });
 
+  for (const command of ['update', 'upgrade', 'outdated']) {
+    test(`bare ${command} also runs Homebrew for taps and casks`, async () => {
+      expect(run([command]).status).toBe(0);
+      expect((await commands()).slice(0, 2)).toEqual([['zb', command], ['brew', command]]);
+    });
+
+    test(`bare ${command} keeps a failure exit code from either manager`, async () => {
+      expect(run([command], { ZB_EXIT: '4' }).status).toBe(4);
+      expect((await commands()).slice(0, 2)).toEqual([['zb', command], ['brew', command]]);
+    });
+  }
+
   test('without zb, all commands go to Homebrew', async () => {
     await rm(join(bin, 'zb'));
     expect(run(['install', 'jq']).status).toBe(0);

@@ -129,7 +129,14 @@ function brew() {
     ls) zb_args[1]=list ;;
   esac
 
-  if (( ! force_homebrew )) && command -v zb >/dev/null 2>&1 && _my_brew_supports_zb "${zb_args[@]}"; then
+  local exit_code
+  # zb は自分の formula しか扱わないため、全体の更新は Homebrew 側（tap・cask）も実行する。
+  if (( ! force_homebrew && ${#args} == 1 )) && [[ "${args[1]}" == (update|upgrade|outdated) ]] && command -v zb >/dev/null 2>&1; then
+    backend=zb
+    command zb "${args[1]}"
+    exit_code=$?
+    command brew "${args[1]}" || exit_code=$?
+  elif (( ! force_homebrew )) && command -v zb >/dev/null 2>&1 && _my_brew_supports_zb "${zb_args[@]}"; then
     backend=zb
     if [[ "${zb_args[1]:-}" == bundle && "${zb_args[2]:-}" != help ]]; then
       case "${zb_args[2]:-}" in
@@ -145,10 +152,11 @@ function brew() {
       (( has_file )) || zb_args+=(--file=Brewfile.zerobrew)
     fi
     command zb "${zb_args[@]}"
+    exit_code=$?
   else
     command brew "${args[@]}"
+    exit_code=$?
   fi
-  local exit_code=$?
 
   # 実行失敗時に別マネージャーで再試行しない（二重インストール防止）。
   if (( exit_code == 0 )); then

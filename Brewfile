@@ -1,5 +1,5 @@
 tap "bufbuild/buf", trusted: { formulae: ["bufbrew"] }
-tap "oven-sh/bun"
+tap "oven-sh/bun", trusted: { formulae: ["bun"] }
 tap "yuyakinjo/tap", trusted: true
 tap "zerobrewhq/zerobrew"
 # Static checker for GitHub Actions workflow files
@@ -14,6 +14,8 @@ brew "agent-browser"
 brew "awscli"
 # Clone of cat(1) with syntax highlighting and Git integration
 brew "bat"
+# Incredibly fast JavaScript runtime, bundler, test runner, and package manager
+brew "bun"
 # JSON parser for C
 brew "json-c"
 # Record CDs in Disk-At-Once mode
@@ -84,6 +86,8 @@ brew "playwright-cli"
 brew "poppler"
 # Object-relational database system
 brew "postgresql@18", link: true
+# Rust toolchain installer
+brew "rustup"
 # Fast, configurable, shell plugin manager
 brew "sheldon"
 # Cross-shell prompt for astronauts
@@ -108,8 +112,6 @@ brew "yarn"
 brew "zoxide"
 # The best way of working with Protocol Buffers.
 brew "bufbuild/buf/buf", trusted: true
-# Incredibly fast JavaScript runtime, bundler, transpiler and package manager - all in one.
-brew "oven-sh/bun/bun", trusted: true
 # Fast package manager for Homebrew packages, written in Rust
 brew "zerobrewhq/zerobrew/zerobrew", trusted: true
 # Password manager that keeps all passwords secure behind one password
@@ -157,6 +159,8 @@ cask "ghostty"
 cask "yuyakinjo/tap/git-squid"
 # Native client for GitHub Copilot
 cask "github-copilot-app"
+# Web browser
+cask "google-chrome"
 # Client for the Google Drive storage service
 cask "google-drive"
 # Japanese input software
@@ -171,6 +175,8 @@ cask "kiro"
 cask "neohtop"
 # Get up and running with large language models locally
 cask "ollama-app"
+# Git workflow controller
+cask "yuyakinjo/tap/piron-orbit"
 # Control your tools with a few keystrokes
 cask "raycast"
 # Screen recorder and editor
