@@ -175,6 +175,8 @@ cask "kiro"
 cask "neohtop"
 # Get up and running with large language models locally
 cask "ollama-app"
+# Git workflow controller
+cask "yuyakinjo/tap/piron-orbit"
 # Control your tools with a few keystrokes
 cask "raycast"
 # Screen recorder and editor
@@ -273,7 +275,6 @@ vscode "wesbos.theme-cobalt2"
 vscode "wmaurer.change-case"
 vscode "xabikos.javascriptsnippets"
 vscode "yuichinukiyama.vscode-preview-server"
-vscode "yutengjing.vscode-colorize-plus"
 vscode "yzhang.markdown-all-in-one"
 go "github.com/golangci/golangci-lint/cmd/golangci-lint"
 go "golang.org/x/tools/gopls"
