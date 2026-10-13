@@ -1,5 +1,5 @@
 tap "bufbuild/buf", trusted: { formulae: ["bufbrew"] }
-tap "oven-sh/bun", trusted: { formulae: ["bun"] }
+tap "oven-sh/bun"
 tap "yuyakinjo/tap", trusted: true
 tap "zerobrewhq/zerobrew"
 # Static checker for GitHub Actions workflow files
@@ -14,8 +14,6 @@ brew "agent-browser"
 brew "awscli"
 # Clone of cat(1) with syntax highlighting and Git integration
 brew "bat"
-# Incredibly fast JavaScript runtime, bundler, test runner, and package manager
-brew "bun"
 # JSON parser for C
 brew "json-c"
 # Record CDs in Disk-At-Once mode
@@ -112,6 +110,8 @@ brew "yarn"
 brew "zoxide"
 # The best way of working with Protocol Buffers.
 brew "bufbuild/buf/buf", trusted: true
+# Incredibly fast JavaScript runtime, bundler, transpiler and package manager - all in one.
+brew "oven-sh/bun/bun", trusted: true
 # Fast package manager for Homebrew packages, written in Rust
 brew "zerobrewhq/zerobrew/zerobrew", trusted: true
 # Password manager that keeps all passwords secure behind one password
@@ -175,8 +175,6 @@ cask "kiro"
 cask "neohtop"
 # Get up and running with large language models locally
 cask "ollama-app"
-# Git workflow controller
-cask "yuyakinjo/tap/piron-orbit"
 # Control your tools with a few keystrokes
 cask "raycast"
 # Screen recorder and editor
@@ -275,6 +273,7 @@ vscode "wesbos.theme-cobalt2"
 vscode "wmaurer.change-case"
 vscode "xabikos.javascriptsnippets"
 vscode "yuichinukiyama.vscode-preview-server"
+vscode "yutengjing.vscode-colorize-plus"
 vscode "yzhang.markdown-all-in-one"
 go "github.com/golangci/golangci-lint/cmd/golangci-lint"
 go "golang.org/x/tools/gopls"
