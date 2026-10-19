@@ -24,7 +24,7 @@ const TARGETS: Target[] = [
 async function sizeOf(path: string): Promise<string | undefined> {
   if (!(await Bun.file(path).exists()) && !(await isDirectory(path))) return undefined;
   const out = await Bun.$`du -xsh ${path}`.quiet().nothrow().text();
-  return out.split(/\s+/)[0] || undefined;
+  return out.trim().split(/\s+/)[0] || undefined;
 }
 
 async function isDirectory(path: string): Promise<boolean> {
@@ -41,27 +41,79 @@ async function freeKb(): Promise<number | undefined> {
   return Number.isFinite(value) ? value : undefined;
 }
 
-export default async function Data({ options, dryRun }: CommandProps<'cache/clean'>) {
-  const targets = options.aerials ? [...TARGETS, { name: 'aerials', path: AERIALS }] : TARGETS;
-  const before = await Promise.all(
-    targets.map(async (t) => ({ name: t.name, path: t.path, size: await sizeOf(t.path) }))
-  );
-  if (dryRun) return { dryRun, targets: before, freedGb: undefined };
+export type Status = 'running' | 'done' | 'skipped';
 
-  const freeBefore = await freeKb();
-  for (const t of targets) {
-    if (t.clean !== undefined) {
-      if (Bun.which(t.clean[0] as string) === null) continue;
-      await Bun.spawn(t.clean, { stdout: 'ignore', stderr: 'ignore' }).exited;
-    } else if (await isDirectory(t.path)) {
-      await Bun.$`rm -f -- ${t.path}/*.mov`.quiet().nothrow();
-      await Bun.$`killall WallpaperAgent idleassetsd`.quiet().nothrow();
-    }
+export interface Row {
+  name: string;
+  path: string;
+  size: string | undefined;
+  status: Status;
+}
+
+export interface Progress {
+  /** 終わった順に並ぶ。running は末尾 */
+  rows: Row[];
+  freedGb: number | undefined;
+  /** 全件終わり、空き容量も測り終えた */
+  settled: boolean;
+}
+
+/** 1 件消す。コマンドが無ければ skipped */
+async function cleanOne(t: Target): Promise<Status> {
+  if (t.clean !== undefined) {
+    if (Bun.which(t.clean[0] as string) === null) return 'skipped';
+    await Bun.spawn(t.clean, { stdout: 'ignore', stderr: 'ignore' }).exited;
+    return 'done';
   }
+  if (!(await isDirectory(t.path))) return 'skipped';
+  await Bun.$`rm -f -- ${t.path}/*.mov`.quiet().nothrow();
+  await Bun.$`killall WallpaperAgent idleassetsd`.quiet().nothrow();
+  return 'done';
+}
+
+/** 並列に消し、終わるたびに終わった順の一覧を流す */
+async function* cleanAll(targets: Target[], before: Row[]): AsyncGenerator<Progress> {
+  const freeBefore = await freeKb();
+  const finished: Row[] = [];
+  const running = new Map(before.map((r) => [r.name, r]));
+  const snapshot = (settled = false, freedGb?: number): Progress => ({
+    rows: [...finished, ...running.values()],
+    freedGb,
+    settled,
+  });
+  yield snapshot();
+
+  const pending = new Map(
+    targets.map((t) => [t.name, cleanOne(t).then((status) => ({ name: t.name, status }))])
+  );
+  while (pending.size > 0) {
+    const { name, status } = await Promise.race(pending.values());
+    pending.delete(name);
+    const row = running.get(name) as Row;
+    running.delete(name);
+    finished.push({ ...row, status });
+    yield snapshot();
+  }
+
   const freeAfter = await freeKb();
-  const freedGb =
+  yield snapshot(
+    true,
     freeBefore !== undefined && freeAfter !== undefined
       ? Math.round(((freeAfter - freeBefore) / 1048576) * 10) / 10
-      : undefined;
-  return { dryRun, targets: before, freedGb };
+      : undefined
+  );
+}
+
+export default async function Data({ options, dryRun }: CommandProps<'cache/clean'>) {
+  const targets = options.aerials ? [...TARGETS, { name: 'aerials', path: AERIALS }] : TARGETS;
+  const before: Row[] = await Promise.all(
+    targets.map(async (t) => ({
+      name: t.name,
+      path: t.path,
+      size: await sizeOf(t.path),
+      status: 'running' as Status,
+    }))
+  );
+  if (dryRun) return { dryRun, targets: before, progress: undefined };
+  return { dryRun, targets: before, progress: cleanAll(targets, before) };
 }
