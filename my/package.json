@@ -16,6 +16,6 @@
   },
   "type": "module",
   "dependencies": {
-    "decopin-cli": "^2026.924.213"
+    "decopin-cli": "^2026.1019.742"
   }
 }

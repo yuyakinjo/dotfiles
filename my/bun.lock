@@ -5,7 +5,7 @@
     "": {
       "name": "my",
       "dependencies": {
-        "decopin-cli": "^2026.924.213",
+        "decopin-cli": "^2026.1019.742",
       },
       "devDependencies": {
         "@types/bun": "^1.4.0",
@@ -20,7 +20,7 @@
 
     "bun-types": ["bun-types@1.4.0", "", { "dependencies": { "@types/node": "*" } }, "sha512-iIKw23BspnQQYd3prITOBxeUsxBHnwzX6YJfGMuNOZzeNcMmVqzIIVGRm1l69ogaPQmb4wB6BN8mA5bE9YuC5Q=="],
 
-    "decopin-cli": ["decopin-cli@2026.924.213", "", { "dependencies": { "valibot": "^1.5.0" }, "bin": { "decopin": "lib/cli/bin.js" } }, "sha512-vh8X5SjvonTjgNemxymmZ9OGXySGOWR6jQd2icoivGGQj3AuBT1raTIslhS14NGqQlqdx+QdHMtAKSdvDianEA=="],
+    "decopin-cli": ["decopin-cli@2026.1019.742", "", { "dependencies": { "valibot": "^1.5.0" }, "bin": { "decopin": "lib/cli/bin.js" } }, "sha512-Uqc0JAuGc9iFwV4aTFXfcF1+w+xlb48ZXC5/rcGowlLK/WcQph3Xt/cRKFdcN2KdIoOQVCt6bDSD5ZVxa19Kyw=="],
 
     "typescript": ["typescript@5.9.3", "", { "bin": { "tsc": "bin/tsc", "tsserver": "bin/tsserver" } }, "sha512-jl1vZzPDinLr9eUt3J/t7V6FgNEw9QjvBPdysz9KfQDD41fQrC2Y4vKQdiaUpFT4bXlb1RHhLpp8wtm6M5TgSw=="],
 
