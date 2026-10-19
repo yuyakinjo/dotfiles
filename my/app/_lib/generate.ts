@@ -36,6 +36,11 @@ path=("$HOME/.local/bin" $path)
 fpath=("$HOME/.zsh/completions" $fpath)
 if command -v my >/dev/null 2>&1; then
   eval "$(my __shell zsh)"
+  # GitHub の dotfiles を裏で取り込む (間引きは my pull 側。結果は ~/.cache/my/pull.log)
+  if [[ -o interactive ]]; then
+    mkdir -p "$HOME/.cache/my"
+    command my pull >"$HOME/.cache/my/pull.log" 2>&1 &!
+  fi
 fi
 
 ${config.init.trimEnd()}
@@ -53,6 +58,8 @@ fi
   for (const [name, body] of Object.entries(config.functions)) {
     files[`.zsh/functions/${name}.zsh`] = body.endsWith('\n') ? body : `${body}\n`;
   }
+
+  Object.assign(files, config.files);
 
   return files;
 }

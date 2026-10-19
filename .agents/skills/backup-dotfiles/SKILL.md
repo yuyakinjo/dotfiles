@@ -1,6 +1,6 @@
 ---
-name: backup-chezmoi-dotfiles
-description: 'この dotfiles リポジトリの変更(my/ の zsh 設定ソース、chezmoi 管理の starship / Ghostty)を commit・push する。「dotfiles をバックアップしたい」「dotfiles を同期し直したい」、ローカルの設定変更をリポジトリに反映したいときに使用する。'
+name: backup-dotfiles
+description: 'この dotfiles リポジトリの変更(my/ の zsh 設定ソース、my/files/ の starship / Ghostty)を commit・push する。「dotfiles をバックアップしたい」「dotfiles を同期し直したい」、ローカルの設定変更をリポジトリに反映したいときに使用する。'
 ---
 
 # dotfiles をバックアップする
@@ -10,9 +10,10 @@ description: 'この dotfiles リポジトリの変更(my/ の zsh 設定ソー�
 このリポジトリ(`$HOME/workspace/dotfiles`)の変更を commit・push する。
 
 - **zsh の設定**は [my/app/_lib/config.ts](../../../my/app/_lib/config.ts) がソース。`~/.zshrc` / `~/.zsh/` は
-  `my apply` の生成物なので、chezmoi の `re-add` の対象ではない。手で `~/.zsh/*.zsh` を編集していたら
+  `my apply` の生成物。手で `~/.zsh/*.zsh` を編集していたら
   `my diff` に出るので、その内容を `config.ts` か `my/zsh/` に移してから `my apply` する
-- **starship / Ghostty** は chezmoi が管理する。`~/.config/starship.toml` を直接編集していたら `chezmoi re-add` で取り込む
+- **starship / Ghostty** は [my/files/](../../../my/files/) がソースで、`my apply` がそのままコピーする。
+  `~/.config/starship.toml` などを直接編集していたら `my diff` に出るので、その内容を `my/files/` に書き戻す
 
 ## 使うタイミング
 
@@ -26,7 +27,6 @@ description: 'この dotfiles リポジトリの変更(my/ の zsh 設定ソー�
 ```bash
 git -C "$HOME/workspace/dotfiles" status --short
 my diff
-chezmoi diff
 ```
 
 `my sync` はリポジトリの**全部の変更**を commit・push する。意図しない変更が混ざっていないかを見て、
@@ -34,9 +34,8 @@ chezmoi diff
 
 ### 1. ドリフトがあれば先に解消する
 
-- `my diff` に差分がある → 実ファイル側の変更を `my/app/_lib/config.ts` か `my/zsh/` に移し、
+- `my diff` に差分がある → 実ファイル側の変更を `my/app/_lib/config.ts`・`my/zsh/`・`my/files/` に移し、
   `cd ~/workspace/dotfiles/my && bun run link && my apply` で差分をゼロにする
-- `chezmoi diff` に差分がある → `chezmoi re-add`(デプロイ先の変更をソースへ)か `chezmoi apply`(ソースをデプロイ先へ)
 
 ### 2. commit・push する
 
@@ -55,7 +54,7 @@ git -C "$HOME/workspace/dotfiles" push
 
 ### 3. 確認
 
-- `my diff` と `chezmoi diff` が差分なし
+- `my diff` が差分なし
 - `git -C "$HOME/workspace/dotfiles" status` がクリーンで、`log -1` が push 済み
 
 ## 補足

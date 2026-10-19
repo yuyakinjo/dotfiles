@@ -1,6 +1,6 @@
 ---
 name: setup-zsh-dotfiles
-description: 'yuyakinjo/dotfiles を $HOME/workspace にクローンし、Homebrew でツールを揃え、chezmoi で starship / Ghostty の設定を、`my` CLI(decopin-cli)で zsh の設定(~/.zshrc, ~/.zsh/)を書き出す。新しいマシンのセットアップ、dotfiles の再インストール、zsh 設定の復元、「dotfiles をクローンしたい」「zshをセットアップしたい」と言われたときに使用する。'
+description: 'yuyakinjo/dotfiles を $HOME/workspace にクローンし、Homebrew でツールを揃え、`my` CLI(decopin-cli)で zsh の設定(~/.zshrc, ~/.zsh/)と starship / Ghostty の設定を書き出す。新しいマシンのセットアップ、dotfiles の再インストール、zsh 設定の復元、「dotfiles をクローンしたい」「zshをセットアップしたい」と言われたときに使用する。'
 ---
 
 # dotfiles から zsh をセットアップする
@@ -8,9 +8,8 @@ description: 'yuyakinjo/dotfiles を $HOME/workspace にクローンし、Homebr
 ## これは何をするか
 
 このリポジトリを `$HOME/workspace/dotfiles` にクローンし、[Homebrew](https://brew.sh/) で
-zsh 設定が使うツールを揃え、[chezmoi](https://www.chezmoi.io/) で zsh 以外の設定
-(starship, Ghostty)を適用し、[`my`](../../../my/README.md)(decopin-cli 製の CLI)をビルドして
-`~/.zshrc` と `~/.zsh/` を**生成物として書き出す**。[bootstrap.sh](../../../bootstrap.sh) と同じ内容。
+zsh 設定が使うツールを揃え、[`my`](../../../my/README.md)(decopin-cli 製の CLI)をビルドして
+`~/.zshrc` と `~/.zsh/`、starship / Ghostty の設定を**生成物として書き出す**。[bootstrap.sh](../../../bootstrap.sh) と同じ内容。
 
 zsh の設定はソースファイルのコピーではない。ソースは [my/app/_lib/config.ts](../../../my/app/_lib/config.ts) で、
 `my apply` がそこから生成する。
@@ -23,13 +22,15 @@ zsh の設定はソースファイルのコピーではない。ソースは [my
 
 ## 手順
 
-### 0. 既にクローン済みのマシンで `git pull` した場合
+### 0. 既にセットアップ済みのマシン
 
-新規セットアップ(1・2)は不要。`my sync-local` が chezmoi apply / `my apply` をまとめて行う:
+新規セットアップ(1・2)は不要。シェル起動時に `my pull` が裏で走り(1 時間に 1 回)、GitHub に
+新しいコミットがあれば fast-forward して `my sync-local` 相当(bun install / link / `my apply`)まで行う。
+手元に未コミットの変更や未 push のコミットがあるときは何もしない。結果は `~/.cache/my/pull.log`。
 
 ```bash
-cd "$HOME/workspace/dotfiles" && git pull
-my sync-local             # --dry-run で何が変わるかだけ確認できる
+my pull --force           # 今すぐ取り込む(--dry-run で何コミット遅れているかだけ確認)
+my sync-local             # 手で git pull した後に反映だけする
 ```
 
 ### 1. ワンショットのブートストラップ(まだローカルにクローンしていない場合)
@@ -49,40 +50,35 @@ curl -fsLS https://raw.githubusercontent.com/yuyakinjo/dotfiles/main/bootstrap.s
    gh repo clone yuyakinjo/dotfiles || git clone https://github.com/yuyakinjo/dotfiles.git
    cd dotfiles
    ```
-2. Homebrew と chezmoi が無ければインストールする:
+2. Homebrew が無ければインストールする:
    ```bash
    command -v brew >/dev/null 2>&1 || /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-   command -v chezmoi >/dev/null 2>&1 || brew install chezmoi
    ```
-3. chezmoi を初期化して zsh 以外の設定を適用する:
-   ```bash
-   chezmoi init --apply --source "$HOME/workspace/dotfiles" "https://github.com/yuyakinjo/dotfiles.git"
-   ```
-4. zsh 設定が使うツールをインストールする:
+3. zsh 設定が使うツールをインストールする:
    ```bash
    brew install starship eza zoxide fzf fzf-tab oven-sh/bun/bun
    ```
-5. `my` をビルドし、zsh の設定を書き出す:
+4. `my` をビルドし、設定を書き出す:
    ```bash
    cd "$HOME/workspace/dotfiles/my" && bun install && bun run link
    "$HOME/.local/bin/my" apply
    ```
    `bun run link` は `~/.local/bin/my` と補完 `~/.zsh/completions/_my` を置く。`my apply` が
-   `~/.zshrc`、`~/.zsh/init.zsh`、`aliases.zsh`、`functions.zsh`、`functions/*.zsh` を書く。
-6. profile を選ぶ(省略時は `personal`):
+   `~/.zshrc`、`~/.zsh/init.zsh`、`aliases.zsh`、`functions.zsh`、`functions/*.zsh`、
+   `~/.config/starship.toml`、Ghostty の `config.ghostty` を書く。
+5. profile を選ぶ(省略時は `personal`):
    ```bash
    mkdir -p ~/.config/my && echo '{"profile": "work"}' > ~/.config/my/device.json
    ```
-7. シェルを再読み込みする:
+6. シェルを再読み込みする:
    ```bash
    exec zsh
    ```
 
 ### 3. 確認
 
-- `my diff` が差分なし(exit 0)であること
+- `my diff` が差分なし(exit 0)であること(starship / Ghostty も含む)
 - `my --help` にコマンド一覧が出て、`my <Tab>` で補完が効くこと
-- `chezmoi diff` で差分が無いこと(starship / Ghostty)
 
 ## 補足
 

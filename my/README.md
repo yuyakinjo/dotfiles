@@ -1,14 +1,15 @@
 # my
 
 decopin-cli で作った、自分用の CLI。`.zshrc` はこの CLI の**生成物**で、ソースは
-`app/_lib/` の TypeScript。alias の暗記と dotfiles 同期を `my <command>` の探索に置き換える。
+`app/_lib/` の TypeScript。starship / Ghostty の設定は `files/` をそのまま配る。alias の暗記と dotfiles 同期を `my <command>` の探索に置き換える。
 
 ```sh
 bun install
 bun run link          # dist/index.js を ~/.local/bin/my に
 my diff               # 生成物と ~/.zshrc, ~/.zsh/* の差分
 my apply              # 書き込む (--dry-run で何が変わるかだけ)
-my sync-local         # git pull 後、chezmoi apply / my apply でローカルに反映
+my sync-local         # 手元のリポジトリを bun install / link / my apply でローカルに反映
+my pull               # GitHub から fast-forward できれば pull して sync-local (シェル起動時に裏で 1 時間に 1 回)
 ```
 
 生成される `.zshrc` が `eval "$(my __shell zsh)"` と補完の `fpath` を入れるので、

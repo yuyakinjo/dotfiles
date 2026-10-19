@@ -13,10 +13,14 @@ export interface ZshConfig {
   init: string;
   /** `.zsh/functions/<name>.zsh` としてそのまま配る zsh 関数 */
   functions: Record<string, string>;
+  /** zsh 以外でそのまま配るファイル ($HOME からの相対パス → 中身) */
+  files: Record<string, string>;
 }
 
 import fzfHistory from '../../zsh/fzf-history-widget.zsh' with { type: 'text' };
 import initZsh from '../../zsh/init.zsh' with { type: 'text' };
+import ghostty from '../../files/config.ghostty' with { type: 'text' };
+import starship from '../../files/starship.toml' with { type: 'text' };
 
 const base: ZshConfig = {
   aliases: {
@@ -33,6 +37,10 @@ const base: ZshConfig = {
   functions: {
     'fzf-history-widget': fzfHistory,
   },
+  files: {
+    '.config/starship.toml': starship,
+    'Library/Application Support/com.mitchellh.ghostty/config.ghostty': ghostty,
+  },
 };
 
 /** profile ごとの差分は spread で書く。テンプレート言語は要らない */
@@ -46,5 +54,7 @@ export const CONFIGS: Record<Profile, ZshConfig> = {
       Object.entries(base.aliases).filter(([name]) => !['ls', 'll', 'la', 'lt'].includes(name))
     ),
     functions: {},
+    // サーバに Ghostty は無い
+    files: { '.config/starship.toml': starship },
   },
 };
