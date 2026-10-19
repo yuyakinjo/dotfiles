@@ -1,8 +1,8 @@
-import { Exit, Line, Symbol, Text, type CommandProps } from 'decopin-cli';
+import { Exit, Line, Symbol, Text, type CmdProps } from 'decopin-cli';
 
 import { computeDrift, diffLines } from '../_lib/drift.ts';
 
-export default async function Command({ data }: CommandProps<'diff'>) {
+export default async function Command({ data }: CmdProps<'diff'>) {
   const { drifts } = await computeDrift();
   const changed = drifts.filter((d) => d.kind !== 'same');
   return (

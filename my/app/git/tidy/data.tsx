@@ -1,4 +1,4 @@
-import { missingTool, notFound, type CommandProps } from 'decopin-cli';
+import { missingTool, notFound, type CmdProps } from 'decopin-cli';
 
 import { listWorktrees } from '../worktree/go/data.tsx';
 
@@ -38,7 +38,7 @@ async function mergedPr(root: string, branch: string): Promise<number | undefine
   return Number.isInteger(number) && number > 0 ? number : undefined;
 }
 
-export default async function Data({ cwd, dryRun }: CommandProps<'git/tidy'>) {
+export default async function Data({ cwd, dryRun }: CmdProps<'git/tidy'>) {
   if (Bun.which('gh') === null) {
     missingTool({ tool: 'gh', reason: 'to tell which PRs are merged', install: 'brew install gh' });
   }

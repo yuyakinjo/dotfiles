@@ -2,7 +2,7 @@ import { mkdir, rm, stat } from 'node:fs/promises';
 import { homedir } from 'node:os';
 import { join } from 'node:path';
 
-import type { CommandProps } from 'decopin-cli';
+import type { CmdProps } from 'decopin-cli';
 
 import { REPO, syncLocal, type SyncResult } from '../_lib/sync-local.ts';
 
@@ -62,7 +62,7 @@ async function pull(dryRun: boolean): Promise<PullResult> {
   return { dryRun, status: 'pulled', behind, sync: await syncLocal(false) };
 }
 
-export default async function Data({ options, dryRun }: CommandProps<'pull'>): Promise<PullResult> {
+export default async function Data({ options, dryRun }: CmdProps<'pull'>): Promise<PullResult> {
   if (!options.force && !dryRun && (await ageMs(STAMP)) < INTERVAL_MS) return { dryRun, status: 'throttled', behind: 0 };
   if (!(await acquireLock())) return { dryRun, status: 'locked', behind: 0 };
   try {

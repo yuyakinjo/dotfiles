@@ -1,4 +1,4 @@
-import { Info, Line, Success, Table, Text, type CommandProps } from 'decopin-cli';
+import { Info, Line, Success, Table, Text, type CmdProps } from 'decopin-cli';
 
 import type { Verdict } from './data.tsx';
 
@@ -13,7 +13,7 @@ function rows(verdicts: Verdict[], dryRun: boolean) {
   ]);
 }
 
-export default function Command({ data }: CommandProps<'git/tidy'>) {
+export default function Command({ data }: CmdProps<'git/tidy'>) {
   const deleted = [...data.branches, ...data.worktrees].filter((v) => v.action === 'deleted').length;
   return (
     <>

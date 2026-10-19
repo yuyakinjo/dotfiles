@@ -1,6 +1,6 @@
-import { Info, Line, List, Success, type CommandProps } from 'decopin-cli';
+import { Info, Line, List, Success, type CmdProps } from 'decopin-cli';
 
-export default function Command({ data }: CommandProps<'sync'>) {
+export default function Command({ data }: CmdProps<'sync'>) {
   if (data.changed.length === 0) return <Info>nothing to sync</Info>;
   return (
     <>

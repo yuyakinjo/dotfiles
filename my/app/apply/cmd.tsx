@@ -1,6 +1,6 @@
-import { Info, Line, Success, Text, type CommandProps } from 'decopin-cli';
+import { Info, Line, Success, Text, type CmdProps } from 'decopin-cli';
 
-export default function Command({ data }: CommandProps<'apply'>) {
+export default function Command({ data }: CmdProps<'apply'>) {
   if (data.written.length === 0) {
     return <Success>everything is already in place ({data.profile})</Success>;
   }

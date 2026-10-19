@@ -1,7 +1,7 @@
 import { homedir } from 'node:os';
 import { join } from 'node:path';
 
-import type { CommandProps } from 'decopin-cli';
+import type { CmdProps } from 'decopin-cli';
 
 const HOME = homedir();
 const AERIALS = join(HOME, 'Library/Application Support/com.apple.wallpaper/aerials/videos');
@@ -104,7 +104,7 @@ async function* cleanAll(targets: Target[], before: Row[]): AsyncGenerator<Progr
   );
 }
 
-export default async function Data({ options, dryRun }: CommandProps<'cache/clean'>) {
+export default async function Data({ options, dryRun }: CmdProps<'cache/clean'>) {
   const targets = options.aerials ? [...TARGETS, { name: 'aerials', path: AERIALS }] : TARGETS;
   const before: Row[] = await Promise.all(
     targets.map(async (t) => ({

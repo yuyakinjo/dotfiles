@@ -2,11 +2,11 @@ import { mkdir } from 'node:fs/promises';
 import { homedir } from 'node:os';
 import { dirname, join } from 'node:path';
 
-import type { CommandProps } from 'decopin-cli';
+import type { CmdProps } from 'decopin-cli';
 
 import { computeDrift } from '../_lib/drift.ts';
 
-export default async function Data({ dryRun }: CommandProps<'apply'>) {
+export default async function Data({ dryRun }: CmdProps<'apply'>) {
   const { profile, drifts } = await computeDrift();
   const changed = drifts.filter((d) => d.kind !== 'same');
   if (!dryRun) {

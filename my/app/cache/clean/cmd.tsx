@@ -1,4 +1,4 @@
-import { Dynamic, Info, Line, Spinner, Success, Table, type CommandProps } from 'decopin-cli';
+import { Dynamic, Info, Line, Spinner, Success, Table, type CmdProps } from 'decopin-cli';
 
 import type { Row } from './data.tsx';
 
@@ -18,7 +18,7 @@ function Rows({ rows, mark = true }: { rows: Row[]; mark?: boolean }) {
   );
 }
 
-export default function Command({ data }: CommandProps<'cache/clean'>) {
+export default function Command({ data }: CmdProps<'cache/clean'>) {
   if (data.progress === undefined) {
     return (
       <>

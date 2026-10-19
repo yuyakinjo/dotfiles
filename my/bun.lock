@@ -5,7 +5,7 @@
     "": {
       "name": "my",
       "dependencies": {
-        "decopin-cli": "^2026.903.717",
+        "decopin-cli": "^2026.924.213",
       },
       "devDependencies": {
         "@types/bun": "^1.4.0",
@@ -20,12 +20,12 @@
 
     "bun-types": ["bun-types@1.4.0", "", { "dependencies": { "@types/node": "*" } }, "sha512-iIKw23BspnQQYd3prITOBxeUsxBHnwzX6YJfGMuNOZzeNcMmVqzIIVGRm1l69ogaPQmb4wB6BN8mA5bE9YuC5Q=="],
 
-    "decopin-cli": ["decopin-cli@2026.903.717", "", { "dependencies": { "valibot": "^1.4.2" }, "bin": { "decopin": "lib/cli/bin.js" } }, "sha512-u8KrEpaE5cREfnZgBnfMpmWfRNyW5ka9BLcA08IBrqjW3l/8erp35jw6KCb5F6Zd+2Tm0M4h2IQyl79feywq0Q=="],
+    "decopin-cli": ["decopin-cli@2026.924.213", "", { "dependencies": { "valibot": "^1.5.0" }, "bin": { "decopin": "lib/cli/bin.js" } }, "sha512-vh8X5SjvonTjgNemxymmZ9OGXySGOWR6jQd2icoivGGQj3AuBT1raTIslhS14NGqQlqdx+QdHMtAKSdvDianEA=="],
 
     "typescript": ["typescript@5.9.3", "", { "bin": { "tsc": "bin/tsc", "tsserver": "bin/tsserver" } }, "sha512-jl1vZzPDinLr9eUt3J/t7V6FgNEw9QjvBPdysz9KfQDD41fQrC2Y4vKQdiaUpFT4bXlb1RHhLpp8wtm6M5TgSw=="],
 
     "undici-types": ["undici-types@8.3.0", "", {}, "sha512-j375ScV60dom+YkPFIfTLcOiPxkN/buHz5GobjLhixFuANaNs3C9l4GmrWqejgXWJ7BbJcFYpTEUkS1Ge8bpZQ=="],
 
-    "valibot": ["valibot@1.4.2", "", { "peerDependencies": { "typescript": ">=5" }, "optionalPeers": ["typescript"] }, "sha512-gjdCvJ6d3RyHAneqxMYMW9QMCwYMb3jpOO0IyHZV1bnRHFBHrX3VkIILt5XYR0WhwHiH7Mty8ovuPZ/O3gamrg=="],
+    "valibot": ["valibot@1.5.0", "", { "peerDependencies": { "typescript": ">=5" }, "optionalPeers": ["typescript"] }, "sha512-nil6AkP2TChWL43Z5uJ6GTxX01CUA+g8LWUM+N/rB9NBbkUMaUsi9PUNzlUPgoKASgmx9f7eGOYpJ04/fSa6FQ=="],
   }
 }

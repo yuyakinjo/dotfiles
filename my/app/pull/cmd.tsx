@@ -1,4 +1,4 @@
-import { Info, Line, List, Success, Text, type CommandProps } from 'decopin-cli';
+import { Info, Line, List, Success, Text, type CmdProps } from 'decopin-cli';
 
 const SKIPPED = {
   throttled: 'skipped: pulled within the last hour (--force to override)',
@@ -10,7 +10,7 @@ const SKIPPED = {
   'pull-failed': 'git merge --ff-only failed',
 } as const;
 
-export default function Command({ data }: CommandProps<'pull'>) {
+export default function Command({ data }: CmdProps<'pull'>) {
   if (data.status !== 'pulled') {
     const behind = data.behind > 0 ? ` (${data.behind} commit(s) behind)` : '';
     return <Info>{SKIPPED[data.status] + behind}</Info>;

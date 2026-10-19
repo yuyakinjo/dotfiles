@@ -1,6 +1,6 @@
-import { Info, Line, List, Success, Text, type CommandProps } from 'decopin-cli';
+import { Info, Line, List, Success, Text, type CmdProps } from 'decopin-cli';
 
-export default function Command({ data }: CommandProps<'sync-local'>) {
+export default function Command({ data }: CmdProps<'sync-local'>) {
   return (
     <>
       {data.steps.map((s) => (

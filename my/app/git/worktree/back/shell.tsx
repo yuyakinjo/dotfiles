@@ -1,6 +1,6 @@
-import { Shell, type CommandProps } from 'decopin-cli';
+import { Shell, type CmdProps } from 'decopin-cli';
 
-export default function ShellChanges({ data }: CommandProps<'git/worktree/back'>) {
+export default function ShellChanges({ data }: CmdProps<'git/worktree/back'>) {
   return (
     <>
       <Shell.Cd to={data.to} />
