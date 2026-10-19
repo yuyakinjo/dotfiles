@@ -1,6 +1,6 @@
 ---
 name: backup-chezmoi-dotfiles
-description: 'この dotfiles リポジトリの変更(my/ の zsh 設定ソース、chezmoi 管理の starship / Ghostty / Brewfile)を commit・push する。「dotfiles をバックアップしたい」「dotfiles を同期し直したい」、ローカルの設定変更をリポジトリに反映したいときに使用する。'
+description: 'この dotfiles リポジトリの変更(my/ の zsh 設定ソース、chezmoi 管理の starship / Ghostty)を commit・push する。「dotfiles をバックアップしたい」「dotfiles を同期し直したい」、ローカルの設定変更をリポジトリに反映したいときに使用する。'
 ---
 
 # dotfiles をバックアップする
@@ -13,7 +13,6 @@ description: 'この dotfiles リポジトリの変更(my/ の zsh 設定ソー�
   `my apply` の生成物なので、chezmoi の `re-add` の対象ではない。手で `~/.zsh/*.zsh` を編集していたら
   `my diff` に出るので、その内容を `config.ts` か `my/zsh/` に移してから `my apply` する
 - **starship / Ghostty** は chezmoi が管理する。`~/.config/starship.toml` を直接編集していたら `chezmoi re-add` で取り込む
-- **Brewfile** は `brew install / uninstall` のたびに自動で更新されている(brew ラッパー関数)
 
 ## 使うタイミング
 

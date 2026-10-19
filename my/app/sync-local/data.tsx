@@ -27,13 +27,6 @@ export default async function Data({ dryRun }: CommandProps<'sync-local'>) {
     ok: !dryRun && chezmoiAvailable && (await run(['chezmoi', 'apply'], REPO)),
   });
 
-  const brewAvailable = Bun.which('brew') !== null;
-  steps.push({
-    name: 'brew bundle',
-    ran: !dryRun && brewAvailable,
-    ok: !dryRun && brewAvailable && (await run(['brew', 'bundle', `--file=${join(REPO, 'Brewfile')}`], REPO)),
-  });
-
   const myDir = join(REPO, 'my');
   const installOk = !dryRun && (await run(['bun', 'install'], myDir));
   steps.push({ name: 'bun install', ran: !dryRun, ok: installOk });

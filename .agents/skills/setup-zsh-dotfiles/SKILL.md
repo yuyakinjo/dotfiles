@@ -1,6 +1,6 @@
 ---
 name: setup-zsh-dotfiles
-description: 'yuyakinjo/dotfiles を $HOME/workspace にクローンし、Homebrew(Brewfile)でツールを揃え、chezmoi で starship / Ghostty の設定を、`my` CLI(decopin-cli)で zsh の設定(~/.zshrc, ~/.zsh/)を書き出す。新しいマシンのセットアップ、dotfiles の再インストール、zsh 設定の復元、「dotfiles をクローンしたい」「zshをセットアップしたい」と言われたときに使用する。'
+description: 'yuyakinjo/dotfiles を $HOME/workspace にクローンし、Homebrew でツールを揃え、chezmoi で starship / Ghostty の設定を、`my` CLI(decopin-cli)で zsh の設定(~/.zshrc, ~/.zsh/)を書き出す。新しいマシンのセットアップ、dotfiles の再インストール、zsh 設定の復元、「dotfiles をクローンしたい」「zshをセットアップしたい」と言われたときに使用する。'
 ---
 
 # dotfiles から zsh をセットアップする
@@ -8,7 +8,7 @@ description: 'yuyakinjo/dotfiles を $HOME/workspace にクローンし、Homebr
 ## これは何をするか
 
 このリポジトリを `$HOME/workspace/dotfiles` にクローンし、[Homebrew](https://brew.sh/) で
-[Brewfile](../../../Brewfile) のツールを揃え、[chezmoi](https://www.chezmoi.io/) で zsh 以外の設定
+zsh 設定が使うツールを揃え、[chezmoi](https://www.chezmoi.io/) で zsh 以外の設定
 (starship, Ghostty)を適用し、[`my`](../../../my/README.md)(decopin-cli 製の CLI)をビルドして
 `~/.zshrc` と `~/.zsh/` を**生成物として書き出す**。[bootstrap.sh](../../../bootstrap.sh) と同じ内容。
 
@@ -25,7 +25,7 @@ zsh の設定はソースファイルのコピーではない。ソースは [my
 
 ### 0. 既にクローン済みのマシンで `git pull` した場合
 
-新規セットアップ(1・2)は不要。`my sync-local` が chezmoi apply / brew bundle / `my apply` をまとめて行う:
+新規セットアップ(1・2)は不要。`my sync-local` が chezmoi apply / `my apply` をまとめて行う:
 
 ```bash
 cd "$HOME/workspace/dotfiles" && git pull
@@ -58,9 +58,9 @@ curl -fsLS https://raw.githubusercontent.com/yuyakinjo/dotfiles/main/bootstrap.s
    ```bash
    chezmoi init --apply --source "$HOME/workspace/dotfiles" "https://github.com/yuyakinjo/dotfiles.git"
    ```
-4. Brewfile のパッケージをインストールする(bun もここで入る):
+4. zsh 設定が使うツールをインストールする:
    ```bash
-   brew bundle --file="$HOME/workspace/dotfiles/Brewfile"
+   brew install starship eza zoxide fzf fzf-tab oven-sh/bun/bun
    ```
 5. `my` をビルドし、zsh の設定を書き出す:
    ```bash
@@ -88,4 +88,4 @@ curl -fsLS https://raw.githubusercontent.com/yuyakinjo/dotfiles/main/bootstrap.s
 
 - 信頼できる情報源は `my/app/_lib/config.ts`。`~/.zshrc` や `~/.zsh/*.zsh` を直接編集しても、次の
   `my apply` で上書きされる。`my diff` がそのドリフトを見せる。
-- zsh のまま配る断片(brew ラッパー、fzf の zle ウィジェット、ツール初期化)は [my/zsh/](../../../my/zsh/) にある。
+- zsh のまま配る断片(fzf の zle ウィジェット、ツール初期化)は [my/zsh/](../../../my/zsh/) にある。

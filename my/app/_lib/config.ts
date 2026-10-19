@@ -15,7 +15,6 @@ export interface ZshConfig {
   functions: Record<string, string>;
 }
 
-import brew from '../../zsh/brew.zsh' with { type: 'text' };
 import fzfHistory from '../../zsh/fzf-history-widget.zsh' with { type: 'text' };
 import initZsh from '../../zsh/init.zsh' with { type: 'text' };
 
@@ -32,7 +31,6 @@ const base: ZshConfig = {
   },
   init: initZsh,
   functions: {
-    brew,
     'fzf-history-widget': fzfHistory,
   },
 };
